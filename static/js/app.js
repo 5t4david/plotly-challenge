@@ -8,5 +8,5 @@ function initial_page() {
 
         plotdata(name_0);
         demographics(name_0)
-    }
-}
+    })
+};
