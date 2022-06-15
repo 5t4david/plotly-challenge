@@ -20,8 +20,9 @@ function initial_page() {
 };
 // use d3 library to read in samples.json
 function buildPlots(id) {
-    d3.json("samples.json").then(function(d){
-        var ids = d.samples.filter(sample => sample.id == id);
+    d3.json("samples.json").then(function(sd){
+        console.log(sd);
+        var ids = sd.samples.filter(sample => sample.id == id);
         var results = ids[0];
 
         data = [];
@@ -90,7 +91,27 @@ function buildPlots(id) {
     })
 };
 
+function proper(str){
+    return str.toLowerCase().split(' ').map(letter => {
+        return (letter.charAt(0).toUpperCase() + letter.slice(1));
+    }).join(' ');
+}
 
+// Collect demographics
+function demographics(id) {
+    d3.json("samples.json").then(function(sd){
+        var demographic = sd.metadata.filter(sample => sample.id == id);
+        var demographs = d3.select('#sample-metadata');
+        demographs.html('');
+        Object.entries(demographic[0]).forEach(([k,v]) => {
+            demographs.append('h5')
+                .text(`${proper(k)}: ${v}`);
+        });
+
+    })
+}
+
+//  Plots and demographics data
 function optionChanged(inID){
     buildPlots(inID);
     demographics(inID);
